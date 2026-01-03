@@ -1,0 +1,19 @@
+[project]
+name = "google-scholar-mcp"
+version = "1.0.0"
+description = "MCP server for searching Google Scholar"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp[cli]>=1.0.0",
+    "google-search-results>=2.4.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[project.scripts]
+google-scholar-mcp = "server:main"

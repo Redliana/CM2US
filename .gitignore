@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+.eggs/
+*.egg-info/
+dist/
+build/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Claude Code
+.claude/
+
+# Environment variables (keep API keys secret)
+.env
+.env.local
+
+# UV
+.uv/
+uv.lock
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local documents (keep in repo but ignore local copies)
+*.pdf
+*.docx
+*.doc
+
+# Papers directory (local reference materials)
+Papers/
