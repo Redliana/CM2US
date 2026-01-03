@@ -19,6 +19,8 @@ from .tools import (
     get_anthropic_tools,
     get_tool_schemas,
     execute_tool,
+    process_openai_tool_call,
+    process_anthropic_tool_use,
 )
 
 __version__ = "1.0.0"
@@ -38,4 +40,6 @@ __all__ = [
     "get_anthropic_tools",
     "get_tool_schemas",
     "execute_tool",
+    "process_openai_tool_call",
+    "process_anthropic_tool_use",
 ]
