@@ -7,9 +7,19 @@ These functions can be called directly or used as tools with any LLM.
 import os
 import re
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
+from dotenv import load_dotenv
 from serpapi import GoogleScholarSearch
+
+# Load .env file from the package directory or current directory
+_package_dir = Path(__file__).parent.parent
+_env_file = _package_dir / ".env"
+if _env_file.exists():
+    load_dotenv(_env_file)
+else:
+    load_dotenv()  # Try current directory
 
 # Module-level API key
 _api_key: Optional[str] = None
@@ -22,11 +32,14 @@ def set_api_key(key: str) -> None:
 
 
 def _get_api_key() -> str:
-    """Get the API key from module state or environment."""
+    """Get the API key from module state, .env file, or environment."""
     key = _api_key or os.environ.get("SERPAPI_KEY", "")
     if not key:
         raise ValueError(
-            "SerpAPI key not set. Either call set_api_key() or set SERPAPI_KEY environment variable. "
+            "SerpAPI key not set. Either:\n"
+            "  1. Create a .env file with SERPAPI_KEY=your-key\n"
+            "  2. Call set_api_key('your-key')\n"
+            "  3. Set SERPAPI_KEY environment variable\n"
             "Get a free key at https://serpapi.com"
         )
     return key

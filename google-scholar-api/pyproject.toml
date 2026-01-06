@@ -5,6 +5,7 @@ description = "Google Scholar search library for use with any LLM"
 requires-python = ">=3.10"
 dependencies = [
     "google-search-results>=2.4.0",
+    "python-dotenv>=1.0.0",
 ]
 
 [project.optional-dependencies]
