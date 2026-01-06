@@ -5,9 +5,8 @@ A standalone Python library for searching Google Scholar, designed for easy inte
 ## Features
 
 - **search_scholar** - Search papers by query, filter by year
-- **search_author** - Find authors by name
-- **get_author_profile** - Get author h-index, citations, publications
 - **get_paper_citations** - Find papers citing a given work
+- **Command-line interface** - Search directly from terminal
 
 Built-in support for:
 - **OpenAI** function calling (GPT-4, GPT-3.5)
@@ -45,7 +44,7 @@ Get a free SerpAPI key at https://serpapi.com (100 searches/month free)
 ### Direct Usage (No LLM)
 
 ```python
-from scholar import search_scholar, search_author, set_api_key
+from scholar import search_scholar, set_api_key
 
 # Set your API key
 set_api_key("your-serpapi-key")
@@ -55,11 +54,8 @@ set_api_key("your-serpapi-key")
 results = search_scholar("retrieval augmented generation", year_from=2023)
 for paper in results.papers:
     print(f"{paper.title} ({paper.year}) - {paper.citations} citations")
-
-# Find an author
-authors = search_author("Geoffrey Hinton")
-for author in authors.authors:
-    print(f"{author.name} - h-index via profile lookup")
+    print(f"  Venue: {paper.venue}")
+    print(f"  URL: {paper.url}")
 ```
 
 ### OpenAI Integration
@@ -129,18 +125,67 @@ result = execute_tool("search_scholar", {
 print(result)
 ```
 
+## Command-Line Interface
+
+Search Google Scholar directly from the terminal without writing any code.
+
+### Setup
+
+Set your API key (once per terminal session):
+```bash
+export SERPAPI_KEY="your-serpapi-key"
+```
+
+### Usage
+
+```bash
+cd google-scholar-api
+
+# Basic search
+uv run python cli.py search "machine learning"
+
+# Search with options
+uv run python cli.py search "retrieval augmented generation" --num 5 --year-from 2023
+
+# Search for arXiv preprints
+uv run python cli.py search "transformers arxiv" --num 10
+
+# Output as JSON (for scripting)
+uv run python cli.py search "neural networks" --json
+
+# Show help
+uv run python cli.py --help
+```
+
+### CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `search <query>` | Search for papers |
+| `--num, -n` | Number of results (default: 10) |
+| `--year-from` | Filter papers from this year |
+| `--year-to` | Filter papers until this year |
+| `--json` | Output results as JSON |
+
+### Example Output
+
+```
+Found 3 papers for: retrieval augmented generation
+
+1. Retrieval-augmented generation for knowledge-intensive nlp tasks
+   Authors: P Lewis, E Perez, A Piktus, F Petroni…
+   Venue: proceedings.neurips.cc
+   Citations: 14596
+   URL: https://proceedings.neurips.cc/paper/...
+   PDF: https://proceedings.neurips.cc/paper/.../Paper.pdf
+```
+
 ## API Reference
 
 ### Search Functions
 
 #### `search_scholar(query, year_from=None, year_to=None, num_results=10)`
 Search for papers. Returns `ScholarResult` with list of `Paper` objects.
-
-#### `search_author(author_name)`
-Search for authors by name. Returns `AuthorResult` with list of `Author` objects.
-
-#### `get_author_profile(author_id)`
-Get detailed author profile. Returns `AuthorResult` with h-index, publications.
 
 #### `get_paper_citations(citation_id, num_results=10)`
 Get papers citing a given paper. Returns `CitationResult`.
