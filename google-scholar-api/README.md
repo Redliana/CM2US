@@ -11,6 +11,7 @@ A standalone Python library for searching Google Scholar, designed for easy inte
 Built-in support for:
 - **OpenAI** function calling (GPT-4, GPT-3.5)
 - **Anthropic** tool use (Claude)
+- **Ollama** local models (Phi-4, Llama, Mistral, etc.)
 - **Generic** tool schemas (adaptable to any LLM)
 
 Searches comprehensively across all publication types:
@@ -30,6 +31,9 @@ uv sync --extra openai
 
 # For Anthropic integration
 uv sync --extra anthropic
+
+# For Ollama integration (local models)
+uv sync --extra ollama
 
 # For all integrations
 uv sync --extra all
@@ -107,6 +111,35 @@ for block in response.content:
         result = process_anthropic_tool_use(block)
         print(result)
 ```
+
+### Ollama Integration (Local Models)
+
+Works with Phi-4, Llama, Mistral, Qwen, and any other Ollama model.
+
+```python
+from examples.ollama_example import chat_with_scholar
+
+# Search with Phi-4 (default)
+response = chat_with_scholar("Find recent papers on retrieval augmented generation")
+print(response)
+
+# Use a different model
+response = chat_with_scholar("Find papers on transformers", model="llama3")
+```
+
+Or run the example directly:
+```bash
+export SERPAPI_KEY="your-serpapi-key"
+uv run python examples/ollama_example.py
+```
+
+**How it works:**
+1. The model receives a system prompt explaining how to request searches
+2. When it needs papers, it outputs JSON: `{"action": "search", "query": "..."}`
+3. We execute the search and return results
+4. The model summarizes the findings
+
+This prompt-based approach works with **any Ollama model** - no native tool calling required.
 
 ### Generic LLM Integration
 
@@ -215,7 +248,8 @@ Process an Anthropic tool use block and return formatted result.
 See the `examples/` directory:
 - `basic_usage.py` - Direct function calls
 - `openai_example.py` - GPT-4 integration
-- `anthropic_example.py` - Claude integration
+- `anthropic_example.py` - Claude API integration
+- `ollama_example.py` - Phi-4, Llama, and other local models
 
 ## License
 
