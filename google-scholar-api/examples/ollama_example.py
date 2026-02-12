@@ -12,13 +12,16 @@ Usage:
     uv run python examples/ollama_example.py
 """
 
+from __future__ import annotations
+
 import json
 import os
 import re
-from ollama import chat
-from scholar import set_api_key, search_scholar
 
-# Set SerpAPI key
+from ollama import chat
+from scholar import search_scholar, set_api_key
+
+# set SerpAPI key
 set_api_key(os.environ.get("SERPAPI_KEY", "your-serpapi-key"))
 
 SYSTEM_PROMPT = """You are a helpful research assistant with access to Google Scholar search.
@@ -42,7 +45,7 @@ If the user's question doesn't require a search, just respond normally."""
 def extract_json_block(text: str) -> dict | None:
     """Extract JSON block from model response."""
     # Try to find JSON in code blocks
-    json_match = re.search(r'```(?:json)?\s*(\{[^`]+\})\s*```', text, re.DOTALL)
+    json_match = re.search(r"```(?:json)?\s*(\{[^`]+\})\s*```", text, re.DOTALL)
     if json_match:
         try:
             return json.loads(json_match.group(1))
@@ -91,7 +94,7 @@ def chat_with_scholar(user_message: str, model: str = "phi4") -> str:
     """
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": user_message}
+        {"role": "user", "content": user_message},
     ]
 
     print(f"Sending to {model}...")
@@ -120,10 +123,12 @@ def chat_with_scholar(user_message: str, model: str = "phi4") -> str:
         formatted = format_results(results)
 
         messages.append({"role": "assistant", "content": response_text})
-        messages.append({
-            "role": "user",
-            "content": f"Here are the search results:\n\n{formatted}\n\nPlease summarize these findings for the user."
-        })
+        messages.append(
+            {
+                "role": "user",
+                "content": f"Here are the search results:\n\n{formatted}\n\nPlease summarize these findings for the user.",
+            }
+        )
 
         print("Getting summary from model...")
         final_response = chat(model=model, messages=messages)
@@ -140,9 +145,7 @@ if __name__ == "__main__":
 
     # Example 1: Search for papers
     print("\n--- Query: Recent RAG papers ---\n")
-    response = chat_with_scholar(
-        "Find recent papers on retrieval augmented generation from 2023"
-    )
+    response = chat_with_scholar("Find recent papers on retrieval augmented generation from 2023")
     print("\n--- Response ---")
     print(response)
 
@@ -150,8 +153,6 @@ if __name__ == "__main__":
 
     # Example 2: More specific query
     print("\n--- Query: arXiv preprints ---\n")
-    response = chat_with_scholar(
-        "Search for 3 arXiv preprints about large language models"
-    )
+    response = chat_with_scholar("Search for 3 arXiv preprints about large language models")
     print("\n--- Response ---")
     print(response)

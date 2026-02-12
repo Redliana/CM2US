@@ -9,9 +9,11 @@ Usage:
     uv run python chat.py
 """
 
+from __future__ import annotations
+
 import json
-import os
 import re
+
 from ollama import chat
 from scholar import search_scholar
 
@@ -48,7 +50,7 @@ Be conversational and helpful."""
 
 def extract_json_block(text: str) -> dict | None:
     """Extract JSON block from model response."""
-    json_match = re.search(r'```(?:json)?\s*(\{[^`]+\})\s*```', text, re.DOTALL)
+    json_match = re.search(r"```(?:json)?\s*(\{[^`]+\})\s*```", text, re.DOTALL)
     if json_match:
         try:
             return json.loads(json_match.group(1))
@@ -88,7 +90,7 @@ def format_results(results) -> str:
 def main():
     print("=" * 60)
     print("  Google Scholar Chat with Phi-4")
-    print("  Type 'quit' or 'exit' to end the conversation")
+    print("  type 'quit' or 'exit' to end the conversation")
     print("=" * 60)
     print()
 
@@ -147,10 +149,12 @@ def main():
 
             # Format results and get summary
             formatted = format_results(results)
-            messages.append({
-                "role": "user",
-                "content": f"Here are the search results:\n\n{formatted}\n\nPlease summarize these findings for me."
-            })
+            messages.append(
+                {
+                    "role": "user",
+                    "content": f"Here are the search results:\n\n{formatted}\n\nPlease summarize these findings for me.",
+                }
+            )
 
             # Get summary from Phi-4
             print("Phi-4: ", end="", flush=True)

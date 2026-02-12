@@ -4,11 +4,14 @@ Anthropic Claude integration example - Using Google Scholar tools with Claude.
 Install: pip install anthropic
 """
 
-import os
-from anthropic import Anthropic
-from scholar import set_api_key, get_anthropic_tools, process_anthropic_tool_use
+from __future__ import annotations
 
-# Set API keys
+import os
+
+from anthropic import Anthropic
+from scholar import get_anthropic_tools, process_anthropic_tool_use, set_api_key
+
+# set API keys
 set_api_key(os.environ.get("SERPAPI_KEY", "your-serpapi-key"))
 client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
@@ -42,9 +45,7 @@ Provide comprehensive literature reviews when asked."""
     # Process tool use if any
     while response.stop_reason == "tool_use":
         # Find all tool use blocks
-        tool_use_blocks = [
-            block for block in response.content if block.type == "tool_use"
-        ]
+        tool_use_blocks = [block for block in response.content if block.type == "tool_use"]
 
         # Add assistant's response
         messages.append({"role": "assistant", "content": response.content})

@@ -9,16 +9,18 @@ Usage:
     uv run python cli.py profile JicYPdAAAAAJ
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
 import sys
 
 from scholar import (
-    search_scholar,
-    search_author,
     get_author_profile,
     get_paper_citations,
+    search_author,
+    search_scholar,
     set_api_key,
 )
 
@@ -117,7 +119,7 @@ def cmd_profile(args):
         print(f"Interests: {', '.join(author.interests[:5])}")
 
     if results.publications:
-        print(f"\nTop Publications:")
+        print("\nTop Publications:")
         for pub in results.publications[:5]:
             print(f"  - {pub['title']} ({pub['year']}) - {pub['citations']} citations")
 
@@ -162,7 +164,9 @@ Examples:
     # Search command
     search_parser = subparsers.add_parser("search", help="Search for papers")
     search_parser.add_argument("query", help="Search query")
-    search_parser.add_argument("--num", "-n", type=int, default=10, help="Number of results (default: 10)")
+    search_parser.add_argument(
+        "--num", "-n", type=int, default=10, help="Number of results (default: 10)"
+    )
     search_parser.add_argument("--year-from", type=int, help="Filter from year")
     search_parser.add_argument("--year-to", type=int, help="Filter to year")
     search_parser.add_argument("--json", action="store_true", help="Output as JSON")

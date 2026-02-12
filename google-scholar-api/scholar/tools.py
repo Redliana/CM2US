@@ -4,14 +4,17 @@ LLM Tool schema generators and execution helpers.
 Provides tool definitions compatible with OpenAI, Anthropic, and other LLMs.
 """
 
+from __future__ import annotations
+
 import json
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from .search import (
-    search_scholar,
-    search_author,
     get_author_profile,
     get_paper_citations,
+    search_author,
+    search_scholar,
 )
 
 # Tool definitions in a provider-agnostic format
@@ -108,9 +111,7 @@ Search tips:
 ]
 
 # Map tool names to functions
-_TOOL_FUNCTIONS: dict[str, Callable] = {
-    tool["name"]: tool["function"] for tool in TOOL_DEFINITIONS
-}
+_TOOL_FUNCTIONS: dict[str, Callable] = {tool["name"]: tool["function"] for tool in TOOL_DEFINITIONS}
 
 
 def get_tool_schemas() -> list[dict]:

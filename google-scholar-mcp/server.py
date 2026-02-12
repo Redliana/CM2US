@@ -8,12 +8,13 @@ This server wraps the google-scholar-api library (../google-scholar-api/)
 as an MCP tool server for use with Claude Code and Claude Desktop.
 """
 
+from __future__ import annotations
+
 import json
 import logging
 import os
 import sys
 from pathlib import Path
-from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -24,10 +25,18 @@ if _api_dir.exists() and str(_api_dir) not in sys.path:
     sys.path.insert(0, str(_api_dir))
 
 from scholar import (
-    search_scholar as _search_scholar,
-    get_paper_citations as _get_paper_citations,
     get_author_profile as _get_author_profile,
+)
+from scholar import (
+    get_paper_citations as _get_paper_citations,
+)
+from scholar import (
     search_author as _search_author,
+)
+from scholar import (
+    search_scholar as _search_scholar,
+)
+from scholar import (
     set_api_key,
 )
 
@@ -73,8 +82,8 @@ if SERPAPI_KEY:
 @mcp.tool()
 def search_scholar(
     query: str,
-    year_from: Optional[int] = None,
-    year_to: Optional[int] = None,
+    year_from: int | None = None,
+    year_to: int | None = None,
     num_results: int = 10,
 ) -> str:
     """
