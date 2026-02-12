@@ -119,7 +119,7 @@ def cmd_profile(args):
         print(f"Interests: {', '.join(author.interests[:5])}")
 
     if results.publications:
-        print(f"\nTop Publications:")
+        print("\nTop Publications:")
         for pub in results.publications[:5]:
             print(f"  - {pub['title']} ({pub['year']}) - {pub['citations']} citations")
 

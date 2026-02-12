@@ -253,7 +253,7 @@ async def search_arxiv(query: str, max_results: int = 10, sort_by: str = "releva
         for i, paper in enumerate(papers, 1):
             authors_str = ", ".join(paper["authors"][:3])
             if len(paper["authors"]) > 3:
-                authors_str += f" et al."
+                authors_str += " et al."
 
             result_lines.append(f"""
 {i}. Title: {paper["title"]}
