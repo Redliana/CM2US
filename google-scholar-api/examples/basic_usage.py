@@ -2,11 +2,13 @@
 Basic usage example - Direct function calls without LLM integration.
 """
 
+from __future__ import annotations
+
 import os
 
 from scholar import get_author_profile, search_author, search_scholar, set_api_key
 
-# Set your SerpAPI key (or use SERPAPI_KEY environment variable)
+# set your SerpAPI key (or use SERPAPI_KEY environment variable)
 set_api_key(os.environ.get("SERPAPI_KEY", "your-api-key-here"))
 
 # Example 1: Search for papers

@@ -9,10 +9,12 @@ Author: MCP Tutorial
 License: MIT
 """
 
+from __future__ import annotations
+
 import logging
 import os
 import xml.etree.ElementTree as ET
-from typing import Any, Optional
+from typing import Any
 
 import httpx
 from mcp.server.fastmcp import FastMCP

@@ -4,6 +4,8 @@ Google Scholar API - A standalone library for searching Google Scholar.
 Works with any LLM via their tool/function calling APIs.
 """
 
+from __future__ import annotations
+
 from .search import (
     AuthorResult,
     CitationResult,

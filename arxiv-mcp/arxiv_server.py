@@ -8,10 +8,12 @@ Author: MCP Tutorial
 License: MIT
 """
 
+from __future__ import annotations
+
 import logging
 import os
 import xml.etree.ElementTree as ET
-from typing import Any, Optional
+from typing import Any
 
 import httpx
 from mcp.server.fastmcp import FastMCP
@@ -163,7 +165,7 @@ async def call_openai_api(prompt: str, model: str = "gpt-4") -> str | None:
         return None
 
     url = "https://api.openai.com/v1/chat/completions"
-    headers = {"Authorization": f"Bearer {OPENAI_API_KEY}", "Content-Type": "application/json"}
+    headers = {"Authorization": f"Bearer {OPENAI_API_KEY}", "Content-type": "application/json"}
 
     payload = {
         "model": model,
@@ -212,7 +214,7 @@ async def call_anthropic_api(prompt: str, model: str = "claude-3-5-sonnet-202410
     headers = {
         "x-api-key": ANTHROPIC_API_KEY,
         "anthropic-version": "2023-06-01",
-        "Content-Type": "application/json",
+        "Content-type": "application/json",
     }
 
     payload = {

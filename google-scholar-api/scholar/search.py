@@ -4,11 +4,12 @@ Core Google Scholar search functions.
 These functions can be called directly or used as tools with any LLM.
 """
 
+from __future__ import annotations
+
 import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
 
 from dotenv import load_dotenv
 from serpapi import GoogleScholarSearch
@@ -39,7 +40,7 @@ def _get_api_key() -> str:
             "SerpAPI key not set. Either:\n"
             "  1. Create a .env file with SERPAPI_KEY=your-key\n"
             "  2. Call set_api_key('your-key')\n"
-            "  3. Set SERPAPI_KEY environment variable\n"
+            "  3. set SERPAPI_KEY environment variable\n"
             "Get a free key at https://serpapi.com"
         )
     return key

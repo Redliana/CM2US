@@ -4,12 +4,14 @@ OpenAI integration example - Using Google Scholar tools with GPT-4.
 Install: pip install openai
 """
 
+from __future__ import annotations
+
 import os
 
 from openai import OpenAI
 from scholar import get_openai_tools, process_openai_tool_call, set_api_key
 
-# Set API keys
+# set API keys
 set_api_key(os.environ.get("SERPAPI_KEY", "your-serpapi-key"))
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 

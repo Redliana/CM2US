@@ -8,12 +8,13 @@ This server wraps the google-scholar-api library (../google-scholar-api/)
 as an MCP tool server for use with Claude Code and Claude Desktop.
 """
 
+from __future__ import annotations
+
 import json
 import logging
 import os
 import sys
 from pathlib import Path
-from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 

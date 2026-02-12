@@ -12,6 +12,8 @@ Usage:
     uv run python examples/ollama_example.py
 """
 
+from __future__ import annotations
+
 import json
 import os
 import re
@@ -19,7 +21,7 @@ import re
 from ollama import chat
 from scholar import search_scholar, set_api_key
 
-# Set SerpAPI key
+# set SerpAPI key
 set_api_key(os.environ.get("SERPAPI_KEY", "your-serpapi-key"))
 
 SYSTEM_PROMPT = """You are a helpful research assistant with access to Google Scholar search.

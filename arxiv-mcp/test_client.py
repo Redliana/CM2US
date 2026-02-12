@@ -5,6 +5,8 @@ This script demonstrates how to test the ArXiv MCP server locally
 using the MCP Inspector or a simple client.
 """
 
+from __future__ import annotations
+
 import asyncio
 import os
 
@@ -31,7 +33,7 @@ async def test_arxiv_server():
             await session.initialize()
             print("✓ Connected to server\n")
 
-            # List available tools
+            # list available tools
             print("Available tools:")
             tools_result = await session.list_tools()
             for tool in tools_result.tools:

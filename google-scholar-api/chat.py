@@ -9,6 +9,8 @@ Usage:
     uv run python chat.py
 """
 
+from __future__ import annotations
+
 import json
 import re
 
@@ -88,7 +90,7 @@ def format_results(results) -> str:
 def main():
     print("=" * 60)
     print("  Google Scholar Chat with Phi-4")
-    print("  Type 'quit' or 'exit' to end the conversation")
+    print("  type 'quit' or 'exit' to end the conversation")
     print("=" * 60)
     print()
 
