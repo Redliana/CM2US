@@ -108,9 +108,7 @@ Search tips:
 ]
 
 # Map tool names to functions
-_TOOL_FUNCTIONS: dict[str, Callable] = {
-    tool["name"]: tool["function"] for tool in TOOL_DEFINITIONS
-}
+_TOOL_FUNCTIONS: dict[str, Callable] = {tool["name"]: tool["function"] for tool in TOOL_DEFINITIONS}
 
 
 def get_tool_schemas() -> list[dict]:

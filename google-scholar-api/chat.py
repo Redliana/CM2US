@@ -48,7 +48,7 @@ Be conversational and helpful."""
 
 def extract_json_block(text: str) -> dict | None:
     """Extract JSON block from model response."""
-    json_match = re.search(r'```(?:json)?\s*(\{[^`]+\})\s*```', text, re.DOTALL)
+    json_match = re.search(r"```(?:json)?\s*(\{[^`]+\})\s*```", text, re.DOTALL)
     if json_match:
         try:
             return json.loads(json_match.group(1))
@@ -147,10 +147,12 @@ def main():
 
             # Format results and get summary
             formatted = format_results(results)
-            messages.append({
-                "role": "user",
-                "content": f"Here are the search results:\n\n{formatted}\n\nPlease summarize these findings for me."
-            })
+            messages.append(
+                {
+                    "role": "user",
+                    "content": f"Here are the search results:\n\n{formatted}\n\nPlease summarize these findings for me.",
+                }
+            )
 
             # Get summary from Phi-4
             print("Phi-4: ", end="", flush=True)

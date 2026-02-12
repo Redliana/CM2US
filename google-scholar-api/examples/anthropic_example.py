@@ -42,9 +42,7 @@ Provide comprehensive literature reviews when asked."""
     # Process tool use if any
     while response.stop_reason == "tool_use":
         # Find all tool use blocks
-        tool_use_blocks = [
-            block for block in response.content if block.type == "tool_use"
-        ]
+        tool_use_blocks = [block for block in response.content if block.type == "tool_use"]
 
         # Add assistant's response
         messages.append({"role": "assistant", "content": response.content})

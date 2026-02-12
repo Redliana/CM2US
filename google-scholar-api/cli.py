@@ -162,7 +162,9 @@ Examples:
     # Search command
     search_parser = subparsers.add_parser("search", help="Search for papers")
     search_parser.add_argument("query", help="Search query")
-    search_parser.add_argument("--num", "-n", type=int, default=10, help="Number of results (default: 10)")
+    search_parser.add_argument(
+        "--num", "-n", type=int, default=10, help="Number of results (default: 10)"
+    )
     search_parser.add_argument("--year-from", type=int, help="Filter from year")
     search_parser.add_argument("--year-to", type=int, help="Filter to year")
     search_parser.add_argument("--json", action="store_true", help="Output as JSON")

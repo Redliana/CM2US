@@ -48,6 +48,7 @@ def _get_api_key() -> str:
 @dataclass
 class Paper:
     """A single paper result."""
+
     title: str
     authors: str
     venue: str
@@ -61,6 +62,7 @@ class Paper:
 @dataclass
 class ScholarResult:
     """Results from a Google Scholar search."""
+
     query: str
     total_results: int
     papers: list[Paper] = field(default_factory=list)
@@ -91,6 +93,7 @@ class ScholarResult:
 @dataclass
 class Author:
     """A single author result."""
+
     name: str
     author_id: str
     affiliation: str
@@ -102,6 +105,7 @@ class Author:
 @dataclass
 class AuthorResult:
     """Results from an author search or profile lookup."""
+
     query: str
     authors: list[Author] = field(default_factory=list)
     # For profile lookups
@@ -137,6 +141,7 @@ class AuthorResult:
 @dataclass
 class CitationResult:
     """Results from a citation lookup."""
+
     citation_id: str
     total_citations: int
     citing_papers: list[Paper] = field(default_factory=list)
@@ -170,10 +175,12 @@ def _parse_venue_year(summary: str) -> tuple[str, str]:
         parts = summary.split(" - ")
         if len(parts) > 1:
             venue_year = parts[-1]
-            year_match = re.search(r'\b(19|20)\d{2}\b', venue_year)
+            year_match = re.search(r"\b(19|20)\d{2}\b", venue_year)
             if year_match:
                 year = year_match.group()
-            venue = venue_year.rsplit(",", 1)[0].strip() if "," in venue_year else venue_year.strip()
+            venue = (
+                venue_year.rsplit(",", 1)[0].strip() if "," in venue_year else venue_year.strip()
+            )
     return venue, year
 
 
@@ -230,16 +237,20 @@ def search_scholar(
             summary = pub_info.get("summary", "")
             venue, year = _parse_venue_year(summary)
 
-            papers.append(Paper(
-                title=result.get("title", "Unknown"),
-                authors=summary.split(" - ")[0] if " - " in summary else summary,
-                venue=venue,
-                year=year,
-                snippet=result.get("snippet", ""),
-                citations=result.get("inline_links", {}).get("cited_by", {}).get("total", 0),
-                url=result.get("link", ""),
-                pdf_url=result.get("resources", [{}])[0].get("link", "") if result.get("resources") else "",
-            ))
+            papers.append(
+                Paper(
+                    title=result.get("title", "Unknown"),
+                    authors=summary.split(" - ")[0] if " - " in summary else summary,
+                    venue=venue,
+                    year=year,
+                    snippet=result.get("snippet", ""),
+                    citations=result.get("inline_links", {}).get("cited_by", {}).get("total", 0),
+                    url=result.get("link", ""),
+                    pdf_url=result.get("resources", [{}])[0].get("link", "")
+                    if result.get("resources")
+                    else "",
+                )
+            )
 
         return ScholarResult(query=query, total_results=len(papers), papers=papers)
 
@@ -274,14 +285,16 @@ def search_author(author_name: str) -> AuthorResult:
 
         authors = []
         for profile in results.get("profiles", [])[:5]:
-            authors.append(Author(
-                name=profile.get("name", "Unknown"),
-                author_id=profile.get("author_id", ""),
-                affiliation=profile.get("affiliations", "Unknown"),
-                email_domain=profile.get("email", ""),
-                citations=profile.get("cited_by", 0),
-                interests=[i.get("title", "") for i in profile.get("interests", [])],
-            ))
+            authors.append(
+                Author(
+                    name=profile.get("name", "Unknown"),
+                    author_id=profile.get("author_id", ""),
+                    affiliation=profile.get("affiliations", "Unknown"),
+                    email_domain=profile.get("email", ""),
+                    citations=profile.get("cited_by", 0),
+                    interests=[i.get("title", "") for i in profile.get("interests", [])],
+                )
+            )
 
         return AuthorResult(query=author_name, authors=authors)
 
@@ -323,20 +336,32 @@ def get_author_profile(author_id: str) -> AuthorResult:
             author_id=author_id,
             affiliation=author_data.get("affiliations", "Unknown"),
             email_domain=author_data.get("email", ""),
-            citations=cited_by.get("table", [{}])[0].get("citations", {}).get("all", 0) if cited_by.get("table") else 0,
+            citations=cited_by.get("table", [{}])[0].get("citations", {}).get("all", 0)
+            if cited_by.get("table")
+            else 0,
             interests=[i.get("title", "") for i in author_data.get("interests", [])],
         )
 
         publications = []
         for article in articles[:10]:
-            publications.append({
-                "title": article.get("title", "Unknown"),
-                "year": article.get("year", "Unknown"),
-                "citations": article.get("cited_by", {}).get("value", 0),
-            })
+            publications.append(
+                {
+                    "title": article.get("title", "Unknown"),
+                    "year": article.get("year", "Unknown"),
+                    "citations": article.get("cited_by", {}).get("value", 0),
+                }
+            )
 
-        h_index = cited_by.get("table", [{}])[0].get("h_index", {}).get("all", 0) if cited_by.get("table") else 0
-        i10_index = cited_by.get("table", [{}])[0].get("i10_index", {}).get("all", 0) if cited_by.get("table") else 0
+        h_index = (
+            cited_by.get("table", [{}])[0].get("h_index", {}).get("all", 0)
+            if cited_by.get("table")
+            else 0
+        )
+        i10_index = (
+            cited_by.get("table", [{}])[0].get("i10_index", {}).get("all", 0)
+            if cited_by.get("table")
+            else 0
+        )
 
         return AuthorResult(
             query=author_id,
@@ -376,7 +401,9 @@ def get_paper_citations(citation_id: str, num_results: int = 10) -> CitationResu
         results = search.get_dict()
 
         if "error" in results:
-            return CitationResult(citation_id=citation_id, total_citations=0, error=results["error"])
+            return CitationResult(
+                citation_id=citation_id, total_citations=0, error=results["error"]
+            )
 
         papers = []
         for result in results.get("organic_results", [])[:num_results]:
@@ -384,15 +411,17 @@ def get_paper_citations(citation_id: str, num_results: int = 10) -> CitationResu
             summary = pub_info.get("summary", "")
             venue, year = _parse_venue_year(summary)
 
-            papers.append(Paper(
-                title=result.get("title", "Unknown"),
-                authors=summary.split(" - ")[0] if " - " in summary else summary,
-                venue=venue,
-                year=year,
-                snippet=result.get("snippet", ""),
-                citations=0,
-                url=result.get("link", ""),
-            ))
+            papers.append(
+                Paper(
+                    title=result.get("title", "Unknown"),
+                    authors=summary.split(" - ")[0] if " - " in summary else summary,
+                    venue=venue,
+                    year=year,
+                    snippet=result.get("snippet", ""),
+                    citations=0,
+                    url=result.get("link", ""),
+                )
+            )
 
         return CitationResult(
             citation_id=citation_id,
