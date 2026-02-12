@@ -5,13 +5,14 @@ Provides tool definitions compatible with OpenAI, Anthropic, and other LLMs.
 """
 
 import json
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
 
 from .search import (
-    search_scholar,
-    search_author,
     get_author_profile,
     get_paper_citations,
+    search_author,
+    search_scholar,
 )
 
 # Tool definitions in a provider-agnostic format

@@ -8,11 +8,10 @@ Author: MCP Tutorial
 License: MIT
 """
 
-import os
 import logging
-from typing import Any, Optional
-from datetime import datetime
+import os
 import xml.etree.ElementTree as ET
+from typing import Any, Optional
 
 import httpx
 from mcp.server.fastmcp import FastMCP
@@ -38,7 +37,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 
 
-async def make_arxiv_request(url: str) -> Optional[str]:
+async def make_arxiv_request(url: str) -> str | None:
     """
     Make a request to the ArXiv API with proper error handling.
 
@@ -148,7 +147,7 @@ Abstract: {paper["summary"][:300]}...
 """
 
 
-async def call_openai_api(prompt: str, model: str = "gpt-4") -> Optional[str]:
+async def call_openai_api(prompt: str, model: str = "gpt-4") -> str | None:
     """
     Call OpenAI API to generate text completions.
 
@@ -194,9 +193,7 @@ async def call_openai_api(prompt: str, model: str = "gpt-4") -> Optional[str]:
             return None
 
 
-async def call_anthropic_api(
-    prompt: str, model: str = "claude-3-5-sonnet-20241022"
-) -> Optional[str]:
+async def call_anthropic_api(prompt: str, model: str = "claude-3-5-sonnet-20241022") -> str | None:
     """
     Call Anthropic Claude API to generate text completions.
 

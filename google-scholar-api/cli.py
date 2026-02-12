@@ -15,10 +15,10 @@ import os
 import sys
 
 from scholar import (
-    search_scholar,
-    search_author,
     get_author_profile,
     get_paper_citations,
+    search_author,
+    search_scholar,
     set_api_key,
 )
 

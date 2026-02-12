@@ -22,7 +22,7 @@ else:
     load_dotenv()  # Try current directory
 
 # Module-level API key
-_api_key: Optional[str] = None
+_api_key: str | None = None
 
 
 def set_api_key(key: str) -> None:
@@ -66,7 +66,7 @@ class ScholarResult:
     query: str
     total_results: int
     papers: list[Paper] = field(default_factory=list)
-    error: Optional[str] = None
+    error: str | None = None
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -109,10 +109,10 @@ class AuthorResult:
     query: str
     authors: list[Author] = field(default_factory=list)
     # For profile lookups
-    h_index: Optional[int] = None
-    i10_index: Optional[int] = None
+    h_index: int | None = None
+    i10_index: int | None = None
     publications: list[dict] = field(default_factory=list)
-    error: Optional[str] = None
+    error: str | None = None
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -145,7 +145,7 @@ class CitationResult:
     citation_id: str
     total_citations: int
     citing_papers: list[Paper] = field(default_factory=list)
-    error: Optional[str] = None
+    error: str | None = None
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -186,8 +186,8 @@ def _parse_venue_year(summary: str) -> tuple[str, str]:
 
 def search_scholar(
     query: str,
-    year_from: Optional[int] = None,
-    year_to: Optional[int] = None,
+    year_from: int | None = None,
+    year_to: int | None = None,
     num_results: int = 10,
 ) -> ScholarResult:
     """

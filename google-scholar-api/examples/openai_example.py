@@ -5,8 +5,9 @@ Install: pip install openai
 """
 
 import os
+
 from openai import OpenAI
-from scholar import set_api_key, get_openai_tools, process_openai_tool_call
+from scholar import get_openai_tools, process_openai_tool_call, set_api_key
 
 # Set API keys
 set_api_key(os.environ.get("SERPAPI_KEY", "your-serpapi-key"))

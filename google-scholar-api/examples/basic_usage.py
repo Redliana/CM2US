@@ -3,7 +3,8 @@ Basic usage example - Direct function calls without LLM integration.
 """
 
 import os
-from scholar import search_scholar, search_author, get_author_profile, set_api_key
+
+from scholar import get_author_profile, search_author, search_scholar, set_api_key
 
 # Set your SerpAPI key (or use SERPAPI_KEY environment variable)
 set_api_key(os.environ.get("SERPAPI_KEY", "your-api-key-here"))

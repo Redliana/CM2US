@@ -5,8 +5,9 @@ Install: pip install anthropic
 """
 
 import os
+
 from anthropic import Anthropic
-from scholar import set_api_key, get_anthropic_tools, process_anthropic_tool_use
+from scholar import get_anthropic_tools, process_anthropic_tool_use, set_api_key
 
 # Set API keys
 set_api_key(os.environ.get("SERPAPI_KEY", "your-serpapi-key"))

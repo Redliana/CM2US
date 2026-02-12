@@ -9,10 +9,10 @@ Author: MCP Tutorial
 License: MIT
 """
 
-import os
 import logging
-from typing import Any, Optional
+import os
 import xml.etree.ElementTree as ET
+from typing import Any, Optional
 
 import httpx
 from mcp.server.fastmcp import FastMCP
@@ -61,7 +61,7 @@ if ANTHROPIC_AVAILABLE and os.getenv("ANTHROPIC_API_KEY"):
     logger.info("Anthropic client initialized")
 
 
-async def make_arxiv_request(url: str) -> Optional[str]:
+async def make_arxiv_request(url: str) -> str | None:
     """Make a request to the ArXiv API."""
     headers = {"User-Agent": USER_AGENT}
     async with httpx.AsyncClient() as client:
@@ -118,7 +118,7 @@ def parse_arxiv_entry(entry: ET.Element) -> dict[str, Any]:
     }
 
 
-def summarize_with_openai_sdk(paper_info: str, model: str = "gpt-4") -> Optional[str]:
+def summarize_with_openai_sdk(paper_info: str, model: str = "gpt-4") -> str | None:
     """
     Generate a summary using the OpenAI SDK.
 
@@ -163,7 +163,7 @@ Please provide a clear, structured summary in 3-4 paragraphs."""
 
 def summarize_with_anthropic_sdk(
     paper_info: str, model: str = "claude-3-5-sonnet-20241022"
-) -> Optional[str]:
+) -> str | None:
     """
     Generate a summary using the Anthropic SDK.
 

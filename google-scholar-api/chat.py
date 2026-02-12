@@ -10,8 +10,8 @@ Usage:
 """
 
 import json
-import os
 import re
+
 from ollama import chat
 from scholar import search_scholar
 

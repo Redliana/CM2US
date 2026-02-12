@@ -15,8 +15,9 @@ Usage:
 import json
 import os
 import re
+
 from ollama import chat
-from scholar import set_api_key, search_scholar
+from scholar import search_scholar, set_api_key
 
 # Set SerpAPI key
 set_api_key(os.environ.get("SERPAPI_KEY", "your-serpapi-key"))
