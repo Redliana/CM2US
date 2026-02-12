@@ -21,17 +21,23 @@ from mcp.server.fastmcp import FastMCP
 
 # Import LLM SDKs
 try:
+    import openai
     from openai import OpenAI
 
+    OpenAIAPIError = openai.APIError
     OPENAI_AVAILABLE = True
 except ImportError:
+    OpenAIAPIError = Exception  # type: ignore[assignment,misc]
     OPENAI_AVAILABLE = False
 
 try:
+    import anthropic
     from anthropic import Anthropic
 
+    AnthropicAPIError = anthropic.APIError
     ANTHROPIC_AVAILABLE = True
 except ImportError:
+    AnthropicAPIError = Exception  # type: ignore[assignment,misc]
     ANTHROPIC_AVAILABLE = False
 
 # Configure logging
@@ -72,7 +78,7 @@ async def make_arxiv_request(url: str) -> str | None:
             response = await client.get(url, headers=headers, timeout=30.0)
             response.raise_for_status()
             return response.text
-        except Exception as e:
+        except httpx.HTTPError as e:
             logger.error(f"Error occurred: {e}")
             return None
 
@@ -158,7 +164,7 @@ Please provide a clear, structured summary in 3-4 paragraphs."""
 
         return response.choices[0].message.content
 
-    except Exception as e:
+    except (OpenAIAPIError, KeyError, ValueError) as e:
         logger.error(f"OpenAI SDK error: {e}")
         return None
 
@@ -193,7 +199,7 @@ Please provide a clear, structured summary in 3-4 paragraphs."""
 
         return message.content[0].text
 
-    except Exception as e:
+    except (AnthropicAPIError, KeyError, ValueError) as e:
         logger.error(f"Anthropic SDK error: {e}")
         return None
 
@@ -261,7 +267,7 @@ async def search_arxiv(query: str, max_results: int = 10, sort_by: str = "releva
 
         return "\n".join(result_lines)
 
-    except Exception as e:
+    except (ET.ParseError, ValueError, KeyError, AttributeError) as e:
         logger.error(f"Error processing results: {e}")
         return "Error: Failed to parse ArXiv API response."
 
@@ -306,7 +312,7 @@ Abstract:
 {paper["summary"]}
 """
 
-    except Exception as e:
+    except (ET.ParseError, ValueError, KeyError, AttributeError) as e:
         logger.error(f"Error: {e}")
         return f"Error: Failed to retrieve paper {arxiv_id}"
 

@@ -59,7 +59,7 @@ async def make_arxiv_request(url: str) -> str | None:
         except httpx.HTTPError as e:
             logger.error(f"HTTP error occurred: {e}")
             return None
-        except Exception as e:
+        except (httpx.InvalidURL, httpx.StreamError, ValueError) as e:
             logger.error(f"Unexpected error occurred: {e}")
             return None
 
@@ -190,7 +190,7 @@ async def call_openai_api(prompt: str, model: str = "gpt-4") -> str | None:
         except httpx.HTTPError as e:
             logger.error(f"OpenAI API error: {e}")
             return None
-        except Exception as e:
+        except (KeyError, ValueError) as e:
             logger.error(f"Unexpected error calling OpenAI: {e}")
             return None
 
@@ -233,7 +233,7 @@ async def call_anthropic_api(prompt: str, model: str = "claude-3-5-sonnet-202410
         except httpx.HTTPError as e:
             logger.error(f"Anthropic API error: {e}")
             return None
-        except Exception as e:
+        except (KeyError, ValueError) as e:
             logger.error(f"Unexpected error calling Anthropic: {e}")
             return None
 
@@ -305,7 +305,7 @@ async def search_arxiv(query: str, max_results: int = 10, sort_by: str = "releva
     except ET.ParseError as e:
         logger.error(f"XML parsing error: {e}")
         return "Error: Failed to parse ArXiv API response."
-    except Exception as e:
+    except (ValueError, KeyError, AttributeError) as e:
         logger.error(f"Unexpected error processing results: {e}")
         return "Error: An unexpected error occurred while processing results."
 
@@ -363,7 +363,7 @@ Abstract:
 {paper["summary"]}
 """
 
-    except Exception as e:
+    except (ET.ParseError, ValueError, KeyError, AttributeError) as e:
         logger.error(f"Error fetching paper {arxiv_id}: {e}")
         return f"Error: Failed to retrieve paper {arxiv_id}."
 

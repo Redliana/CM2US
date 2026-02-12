@@ -81,7 +81,7 @@ async def test_arxiv_server():
                     arguments={"arxiv_id": "1706.03762", "llm_provider": "openai"},
                 )
                 print(summary_result.content[0].text)
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 print(f"Error: {e}")
                 print("Make sure your API keys are set in environment variables")
 
@@ -95,7 +95,7 @@ async def main():
     """Main entry point."""
     try:
         await test_arxiv_server()
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"Error running tests: {e}")
         import traceback
 

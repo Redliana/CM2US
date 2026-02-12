@@ -255,7 +255,7 @@ def search_scholar(
 
         return ScholarResult(query=query, total_results=len(papers), papers=papers)
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - API boundary handler
         return ScholarResult(query=query, total_results=0, error=str(e))
 
 
@@ -299,7 +299,7 @@ def search_author(author_name: str) -> AuthorResult:
 
         return AuthorResult(query=author_name, authors=authors)
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - API boundary handler
         return AuthorResult(query=author_name, error=str(e))
 
 
@@ -372,7 +372,7 @@ def get_author_profile(author_id: str) -> AuthorResult:
             publications=publications,
         )
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - API boundary handler
         return AuthorResult(query=author_id, error=str(e))
 
 
@@ -430,5 +430,5 @@ def get_paper_citations(citation_id: str, num_results: int = 10) -> CitationResu
             citing_papers=papers,
         )
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - API boundary handler
         return CitationResult(citation_id=citation_id, total_citations=0, error=str(e))
