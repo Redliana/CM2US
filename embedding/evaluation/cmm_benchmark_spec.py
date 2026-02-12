@@ -190,7 +190,7 @@ class EntityResolutionItem(BenchmarkItem):
         return self.canonical_entity
 
     def get_ground_truth(self) -> set[str]:
-        return set([self.canonical_entity] + self.aliases)
+        return set([self.canonical_entity, *self.aliases])
 
 
 @dataclass
@@ -341,7 +341,7 @@ class BenchmarkSuite:
             json.dump(data, f, indent=2)
 
     @classmethod
-    def load(cls, path: str) -> "BenchmarkSuite":
+    def load(cls, path: str) -> BenchmarkSuite:
         """Load benchmark suite from JSON file."""
         with open(path) as f:
             data = json.load(f)

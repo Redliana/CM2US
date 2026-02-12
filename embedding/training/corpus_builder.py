@@ -153,7 +153,7 @@ class TrainingCorpus:
     def add_pair(self, pair: CrossModalPair):
         self.pairs.append(pair)
 
-    def filter_by_confidence(self, min_confidence: float) -> "TrainingCorpus":
+    def filter_by_confidence(self, min_confidence: float) -> TrainingCorpus:
         """Return corpus filtered by minimum confidence."""
         filtered = TrainingCorpus(
             pairs=[p for p in self.pairs if p.confidence_score >= min_confidence],
@@ -161,7 +161,7 @@ class TrainingCorpus:
         )
         return filtered
 
-    def filter_by_modalities(self, modality_a: Modality, modality_b: Modality) -> "TrainingCorpus":
+    def filter_by_modalities(self, modality_a: Modality, modality_b: Modality) -> TrainingCorpus:
         """Return corpus filtered to specific modality pair."""
         filtered_pairs = []
         for p in self.pairs:
@@ -229,7 +229,7 @@ class TrainingCorpus:
         logger.info(f"Saved {len(self.pairs)} pairs to {path}")
 
     @classmethod
-    def load(cls, path: str) -> "TrainingCorpus":
+    def load(cls, path: str) -> TrainingCorpus:
         """Load corpus from JSONL file."""
         corpus = cls()
 
@@ -280,7 +280,7 @@ class DataSourceConnector(ABC):
     """Abstract base class for data source connectors."""
 
     @abstractmethod
-    async def fetch_items(self, limit: int = None) -> Iterator[ModalityData]:
+    async def fetch_items(self, limit: int | None = None) -> Iterator[ModalityData]:
         """Fetch items from the data source."""
         pass
 
@@ -458,7 +458,7 @@ class USGSConnector(DataSourceConnector):
     def get_source_name(self) -> str:
         return "usgs"
 
-    async def fetch_items(self, limit: int = None) -> Iterator[ModalityData]:
+    async def fetch_items(self, limit: int | None = None) -> Iterator[ModalityData]:
         """
         Fetch USGS mineral commodity summaries and reports.
 
@@ -582,7 +582,7 @@ class SpectrumDatabaseConnector(DataSourceConnector):
     def get_source_name(self) -> str:
         return "spectrum_database"
 
-    async def fetch_items(self, limit: int = None) -> Iterator[ModalityData]:
+    async def fetch_items(self, limit: int | None = None) -> Iterator[ModalityData]:
         """
         Fetch spectral data from local database.
 

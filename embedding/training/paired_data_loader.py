@@ -78,7 +78,7 @@ class ContrastiveBatch:
     pair_ids: list[str] | None = None
     confidence_scores: torch.Tensor | None = None
 
-    def to(self, device: torch.device) -> "ContrastiveBatch":
+    def to(self, device: torch.device) -> ContrastiveBatch:
         """Move tensors to device."""
         return ContrastiveBatch(
             modality_a_types=self.modality_a_types,

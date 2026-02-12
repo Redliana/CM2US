@@ -66,7 +66,7 @@ __version__ = "0.1.0"
 from . import evaluation, training
 
 __all__ = [
-    "training",
-    "evaluation",
     "__version__",
+    "evaluation",
+    "training",
 ]

@@ -183,10 +183,7 @@ class EntityResolutionMetrics:
         precision = intersection / len(predicted_cluster)
         recall = intersection / len(ground_truth_cluster)
 
-        if precision + recall == 0:
-            f1 = 0.0
-        else:
-            f1 = 2 * precision * recall / (precision + recall)
+        f1 = 0.0 if precision + recall == 0 else 2 * precision * recall / (precision + recall)
 
         return (precision, recall, f1)
 
@@ -210,10 +207,7 @@ class EntityResolutionMetrics:
         precision = intersection / len(pred_normalized) if pred_normalized else 0.0
         recall = intersection / len(gt_normalized) if gt_normalized else 0.0
 
-        if precision + recall == 0:
-            f1 = 0.0
-        else:
-            f1 = 2 * precision * recall / (precision + recall)
+        f1 = 0.0 if precision + recall == 0 else 2 * precision * recall / (precision + recall)
 
         return (precision, recall, f1)
 
@@ -225,7 +219,7 @@ class SupplyChainMetrics:
     def path_accuracy(
         predicted_path: list[str],
         ground_truth_path: list[str],
-        alternative_paths: list[list[str]] = None,
+        alternative_paths: list[list[str]] | None = None,
     ) -> float:
         """
         Compute path accuracy.
@@ -837,9 +831,7 @@ class BenchmarkRunner:
 
         aggregate = {}
         numeric_keys = [
-            k
-            for k in per_item_metrics[0].keys()
-            if isinstance(per_item_metrics[0][k], (int, float))
+            k for k in per_item_metrics[0] if isinstance(per_item_metrics[0][k], (int, float))
         ]
 
         for key in numeric_keys:
@@ -890,8 +882,8 @@ class BenchmarkRunner:
 
 def run_quick_evaluation(
     model: Any,
-    benchmark_path: str = None,
-    output_path: str = None,
+    benchmark_path: str | None = None,
+    output_path: str | None = None,
 ) -> EvaluationResults:
     """
     Run quick evaluation with default settings.

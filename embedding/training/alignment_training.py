@@ -354,7 +354,7 @@ class MetricTracker:
 
     def get_all_averages(self, window: int = 100) -> dict[str, float]:
         """Get moving averages of all metrics."""
-        return {key: self.get_average(key, window) for key in self.metrics.keys()}
+        return {key: self.get_average(key, window) for key in self.metrics}
 
     def reset(self):
         """Reset all metrics."""
@@ -647,7 +647,7 @@ class CrossModalAlignmentTrainer:
 
         # Average metrics
         avg_metrics = {}
-        for key in all_metrics[0].keys():
+        for key in all_metrics[0]:
             avg_metrics[key] = np.mean([m[key] for m in all_metrics])
 
         return avg_metrics
@@ -735,14 +735,18 @@ class CrossModalAlignmentModel(nn.Module):
 
         # Encode modality A
         embeddings_a = []
-        for content, mod_type in zip(batch.modality_a_contents, batch.modality_a_types):
+        for content, mod_type in zip(
+            batch.modality_a_contents, batch.modality_a_types, strict=False
+        ):
             emb = self.encode_modality(content, mod_type)
             embeddings_a.append(emb)
         embeddings_a = torch.stack(embeddings_a)
 
         # Encode modality B
         embeddings_b = []
-        for content, mod_type in zip(batch.modality_b_contents, batch.modality_b_types):
+        for content, mod_type in zip(
+            batch.modality_b_contents, batch.modality_b_types, strict=False
+        ):
             emb = self.encode_modality(content, mod_type)
             embeddings_b.append(emb)
         embeddings_b = torch.stack(embeddings_b)
